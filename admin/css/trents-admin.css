@@ -1,0 +1,170 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+ 
+.map {
+  width: 100%;
+  height: 250px;
+  z-index:100;
+}
+#mapSearchContainer{
+  position:fixed;
+  top:20px;
+  right: 40px;
+  height:30px;
+  width:180px;
+  z-index:110;
+  font-size:10pt;
+  color:#5d5d5d;
+  border:solid 1px #bbb;
+  background-color:#f8f8f8;
+}
+.pointer{
+  position:absolute;
+  top:86px;
+  left:60px;
+  z-index:99999;
+}
+.location {
+  margin-bottom: 20px;
+}
+.location:last-child{
+  margin-bottom: 0;
+}
+.jobdata-inp{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+img[src=""]{
+  display: none;
+}
+.logo-wrapp {
+  width: 100px;
+  height: fit-content;
+  padding: 5px;
+  border: 1px solid #ddd;
+  overflow: hidden;
+  margin-bottom: 10px;
+  background: #898989;
+}
+button#removeLogo {
+  margin-left: 10px;
+}
+
+/* Driver page */
+.profile_information {
+	display: flex;
+	gap: 20px;
+}
+.profile_information > form {
+	width: 40%;
+	background: #fff;
+	padding: 10px;
+  height: fit-content;
+}
+.submittedDocuments {
+	width: 60%;
+  height: fit-content;
+}
+.profile_docs{
+	background: #fff;
+	padding: 10px;
+}
+.profile_information h4, .truck_information h4, .paymentInformations h4 {
+	margin: 0;
+	color: #2271b1;
+	border-bottom: 1px solid #ddd;
+	padding-bottom: 10px;
+	margin-bottom: 10px;
+}
+.truck_information, .paymentInformations {
+	padding: 10px;
+	background: #fff;
+	margin-top: 20px;
+}
+div.mng_input {
+	margin-bottom: 15px;
+	display: flex;
+	flex-direction: column;
+}
+div.mng_input p {
+  margin: 0;
+}
+.profileranks {
+	color: #f00;
+	font-size: 18px;
+}
+.submittedDocuments table {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	text-align: left;
+	border-collapse: collapse;
+  margin-bottom: 20px;
+}
+.submittedDocuments table thead {
+	background: #ddd;
+}
+.submittedDocuments table tr {
+	border-bottom: 1px solid #ddd !important;
+}
+.submittedDocuments table tr:last-child{
+  border-bottom: none !important;
+}
+.submittedDocuments table tr:nth-child(even){
+  background-color: #f2f2f282;
+}
+.submittedDocuments table tr th, .submittedDocuments table tr td{
+  padding: 5px;
+}
+.trucks_list table tbody tr td strong{
+  display: none;
+}
+
+.information-section {
+  margin-bottom: 30px;
+  min-width: 50%;
+  background: #fff;
+  padding: 10px 20px;
+  border: 1px solid #ddd;
+}
+
+.information-section table {
+  text-align: left;
+  width: 50%;
+}
+.information-section table tr th, .information-section table tr td{
+  width: 50%;
+}
+.information-section h4 {
+  margin: 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .profile_information {
+    flex-direction: column;
+  }
+  .profile_information > form, .submittedDocuments {
+    width: 100%;
+  }
+
+  .trucks_list table thead {
+    display: none;
+  }
+  .trucks_list table tr {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      border-bottom: 15px solid #ddd;
+  }
+  .trucks_list table tbody tr td strong {
+      display: block;
+      padding-bottom: 5px;
+  }
+}
+/* Driver page */
