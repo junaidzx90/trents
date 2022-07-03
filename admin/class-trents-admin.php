@@ -138,7 +138,7 @@ class Truck_Rents_Admin {
 			'hierarchical'       => false,
 			'menu_icon'       	 => 'dashicons-money',
 			'menu_position'      => 20,
-			'supports'           => array( 'title' ),
+			'supports'           => array(  ),
 			'taxonomies'         => array( 'trucks' ),
 			'show_in_rest'       => false
 		);
@@ -154,17 +154,6 @@ class Truck_Rents_Admin {
 				'id' => 'trent-job-sidebar',
 				'description' => __( 'Job Sidebar', 'trents' ),
 				'before_widget' => '<div class="job-sidebar"><div class="job-widget">',
-				'after_widget' => "</div></div>",
-				'before_title' => '<h3 class="widget-title">',
-				'after_title' => '</h3>',
-			)
-		);
-		register_sidebar(
-			array (
-				'name' => __( 'New Job Sidebar', 'trents' ),
-				'id' => 'new-job-sidebar',
-				'description' => __( 'New Job Sidebar', 'trents' ),
-				'before_widget' => '<div class="new-job-sidebar"><div class="job-widget">',
 				'after_widget' => "</div></div>",
 				'before_title' => '<h3 class="widget-title">',
 				'after_title' => '</h3>',
@@ -234,7 +223,8 @@ class Truck_Rents_Admin {
 		);
 	
 		$new_columns = array(
-			'title' => __('Job Title', 'trents'),
+			'title' => __('Job ID', 'trents'),
+			'job_author' => __('Owner', 'trents'),
 			'loadloc' => __('Load Location', 'trents'),
 			'unloadloc' => __('Unload Location', 'trents'),
 			'loadtime' => __('Load Time', 'trents'),
@@ -249,6 +239,11 @@ class Truck_Rents_Admin {
 		switch ($column_id) {
 			case 'loadloc':
 				echo get_post_meta($post_id, 'tr_load_location', true );
+				break;
+			case 'job_author':
+				$post_author_id = get_post_field( 'post_author', $post_id );
+				echo get_user_by( "ID", $post_author_id )->display_name;
+				echo '<p><a href="tel:'.get_user_meta($post_author_id, 'user_phone', true ).'">'.get_user_meta($post_author_id, 'user_phone', true ).'</a></p>';
 				break;
 			case 'unloadloc':
 				echo get_post_meta($post_id, 'tr_unload_location', true );
@@ -410,10 +405,23 @@ class Truck_Rents_Admin {
 		add_meta_box( 'trucksdiv', "Trucks Type", 'post_categories_meta_box', 'trent', 'side', '', array(
 			'taxonomy' => 'trucks'
 		) );
+		add_meta_box( 'job_author', "Owner", [$this, 'job_author'], 'trent', 'side' );
 		add_meta_box( 'loadlocation_box', "Locations", [$this, 'loadlocation_box_location'], 'trent', 'advanced' );
 		add_meta_box( 'jobdata', "Job Data", [$this, 'jobdata_location'], 'trent', 'advanced' );
 	}
 	
+	function job_author($post){
+		$selected = $post->post_author;
+		$authors = get_users( 'role=client' );
+		echo '<select class="widefat" name="job_author">';
+		echo '<option value="">Select a customer</option>';
+		if($authors){
+			foreach($authors as $author){
+				echo '<option '.(($selected && intval($selected) === $author->ID) ? 'selected': '').' value="'.$author->ID.'">'.$author->display_name.'</option>';
+			}
+		}
+		echo '</select>';
+	}
 	// Location view
 	function loadlocation_box_location($post){
 		echo '<div class="location">
@@ -442,6 +450,17 @@ class Truck_Rents_Admin {
 		echo '</div>';
 	}
 
+	// Post data filter
+	function trent_jobs_title_filter($data, $postarr, $unsanitized_postarr){
+		if ( get_post_type( $postarr['ID'] ) == 'trent' ) {
+			$data['post_title'] = "Job-".$postarr['ID'];
+			if(isset($postarr['job_author'])){
+				$data['post_author'] = $postarr['job_author'];
+			}
+		}
+    	return $data;
+	}
+
 	// Save metadata
 	function save_trent_job_metadata($post_id){
 		if(isset($_POST['load_location'])){
@@ -450,7 +469,6 @@ class Truck_Rents_Admin {
 		if(isset($_POST['unload_location'])){
 			update_post_meta( $post_id, 'tr_unload_location', sanitize_text_field( $_POST['unload_location'] ) );
 		}
-
 		if(isset($_POST['goodstype'])){
 			update_post_meta( $post_id, 'tr_goodstype', sanitize_text_field( $_POST['goodstype'] ) );
 		}
@@ -467,7 +485,6 @@ class Truck_Rents_Admin {
 		if(get_option( 'truck_rents_roles_version' ) < 1){
 			add_role( 'driver', 'Driver' );
 			add_role( 'client', 'Client' );
-			add_role( 'partner', 'Partner' );
 
 			update_option( 'truck_rents_roles_version', 1 );
 		}

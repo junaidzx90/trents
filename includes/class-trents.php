@@ -182,6 +182,7 @@ class Truck_Rents {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'init', $plugin_admin, 'trent_jobs_post_type' );
+		$this->loader->add_action( 'wp_insert_post_data', $plugin_admin, 'trent_jobs_title_filter',10,3 );
 		$this->loader->add_action( 'widgets_init', $plugin_admin, 'trent_job_sidebar' );
 		$this->loader->add_action( 'init', $plugin_admin, 'trent_jobs_category' );
 

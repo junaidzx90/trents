@@ -1,4 +1,6 @@
-<?php get_header() ?>
+<?php 
+add_filter( 'show_admin_bar', '__return_false' );
+get_header() ?>
 <?php wp_enqueue_script('trent-jobs'); ?>
 
 <div id="job-wrap" style="<?php echo ((get_option('jobpagesidebar') === 'enable') ? 'width: 75%' : 'width: 100%') ?>">
@@ -11,7 +13,7 @@
     </div>
 
     <div id="activejobs">
-        <h3 class="heading3">চলমান ট্রিপ্স</h3>
+        <h3 class="heading3">চলমান ট্রিপ</h3>
         <div class="job-page-contents">
             <div class="jobcontents">
                 <?php
@@ -21,9 +23,21 @@
                     $term_list = get_the_term_list( $post_id, $taxonomy, '', ', ' );
                     return apply_filters( 'the_terms', $term_list, $taxonomy, '', ', ' );
                 }
+			 
+			 	$args = array(
+					'post_type' => 'trent',
+					'post_status' => array('publish'),
+					'posts_per_page' => "-1",
+					'meta_key' => 'tr_load_datetime',
+					'orderby' => 'meta_value',
+					'order' => 'ASC'
+				);
+			 
+				// Execute query
+				$jobObj = new WP_Query($args);
 
-                if ( have_posts() ) :
-                    while ( have_posts() ) : the_post();
+                if ( $jobObj->have_posts() ) :
+                    while ( $jobObj->have_posts() ) : $jobObj->the_post();
                         $driver_id = get_current_user_id(  );
                         $job_id = get_post()->ID;
                         $trucks = trent_terms(get_post(), 'trucks');
@@ -42,12 +56,14 @@
 
                         if($not_deal && empty($mysubmission)){
                             $nojob = false;
+                            $post_author_id = get_post_field( 'post_author', get_post()->ID );
+                            $authorname = get_user_by( "ID", $post_author_id )->display_name;
                             ?>
                             <div class="job <?php echo $mysubmission ?>" id="job-<?php echo get_post()->ID ?>">
                                 <input type="hidden" class="job_ID" value="<?php echo get_post()->ID ?>">
                                 
                                 <h3 class="<?php echo (($mysubmission === 'applied' && (current_user_can( 'driver' )) || current_user_can( 'partner' ))? $mysubmission : (current_user_can( 'client' ) ? 'noteligable' : 'openjob')) ?> jobtitle"><?php __(the_title(), 'trents') ?></h3>
-                                
+                                <p class="postedby">Posted by: <?php echo $authorname ?></p>
                                 <div><p class="publish_times"><?php echo time_elapsed_string(get_the_date( "Y/m/d h:i:s" )) ?></p></div>
 
                                 <div class="jobbody">
@@ -93,10 +109,10 @@
                                     <div class="submitapplicationbox">
                                         <?php
                                         if($mysubmission === 'applied'){
-                                            _e('<button class="applied submit-application">আবেদন করা হয়েছে</button>', 'trents');
+                                            _e('<button class="applied submit-application">অপেক্ষমান</button>', 'trents');
                                         }else{
                                             if(current_user_can( 'driver' )){
-                                                _e('<button class="openjob submit-application">আবেদন করুন</button>', 'trents');
+                                                _e('<button class="openjob submit-application">ভাড়া জানান</button>', 'trents');
                                             }
                                         }
                                         ?>
@@ -111,7 +127,7 @@
                         }
                     endwhile;
                 else :
-                    _e( '<div class="nojobarefound">Sorry, no jobs were found.</div>', 'trents' );
+                    $nojob = true;
                 endif;
 
                 if($nojob){

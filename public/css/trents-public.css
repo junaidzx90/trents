@@ -94,6 +94,7 @@ body{
     font-size: 14px;
     font-weight: 100;
     font-family: 'Raleway', sans-serif;
+    color: #fff;
 }
 .sidebar_contents .menuitems ._item:hover{
     border-left: 3px solid #ddd;
@@ -575,6 +576,12 @@ h3.jobtitle:hover{
     font-weight: 100;
     line-height: 22px;
 }
+.jobcontents .job p.postedby {
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #7d7d7d;
+}
 p.jobdesc {
     margin-top: 10px !important;
     border-top: 1px solid #ddd;
@@ -587,9 +594,10 @@ p.jobdesc {
     gap: 10px;
 }
 button.submit-application {
-    padding: 10px 20px;
-    background: var(--primary);
-    border-radius: 3px;
+	padding: 10px 20px;
+	background: #0980ff;
+	border-radius: 3px;
+	color: #fff;
 }
 button.submit-application:hover{
     opacity: .8;
@@ -680,31 +688,10 @@ div#createjob_contents {
     gap: 20px;
     padding-top: 20px;
 }
-div#newjobsidebar {
-    width: 30%;
-    padding: 10px;
-    background: #fff;
-    height: fit-content;
-    border-radius: 5px;
-    box-shadow: 0px 2px 7px -3px;
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
-}
-div#newjobsidebar .sidebar-widget {
-    width: 100%;
-    padding: 0;
-    margin: 0;
-}
-div#newjobsidebar .sidebar-widget .widget-title {
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 12px;
-    margin-bottom: 8px;
-}
 div#createjob_contents form {
     display: flex;
     flex-direction: column;
-    width: 70%;
+    width: 100%;
     margin-bottom: 50px;
 }
 .formInp {
@@ -851,8 +838,9 @@ input#user_profile_submit:hover{
     height: 100%;
     width: 100%;
 }
-.unverifiedNotice h1.unverifiedTitle, .loginbox a{
-    color: #de3030;
+.unverifiedNotice h1.unverifiedTitle, .loginbox a {
+	color: #de3030;
+	font-size: 40px;
 }
 .applyform form {
     height: 100%;
@@ -954,6 +942,7 @@ table.history_table {
     border: 1px solid #ddd;
     padding: 5px;
     border-collapse: collapse;
+    width: 100%;
 }
 .trip__title {
     padding: 5px;
@@ -1127,6 +1116,19 @@ table.history_table tbody tr:last-child {
 	border-radius: 5px;
 	background: var(--primary);
 	color: #fff;
+}
+#payments_section {
+	margin-top: 30px;
+}
+#payment_table tr th, #payment_table td {
+	text-align: left;
+	padding: 5px;
+}
+#payment_table thead {
+	background-color: #ddd;
+}
+.formInp input {
+	padding: 10px;
 }
 
 @media screen and (max-width: 768px){

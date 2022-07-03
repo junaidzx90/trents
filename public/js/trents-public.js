@@ -2,13 +2,6 @@ const trents = new Vue({
     el: '#rents_wrap',
     data: {
         isDisabled: false,
-        progress_page: false,
-        activeJob_page: false,
-        createJob_page: false,
-        trip_history_page: false,
-        payments_page: false,
-        profile_page: false,
-        pageTitle: 'চলমান ট্রিপ্স',
         driverDocs: {
             documentType: 'nid-card',
             isNidCard: true,
@@ -25,58 +18,8 @@ const trents = new Vue({
         currentDue: 0,   
     },
     methods: {
-        allMenusDisable: function () {
-            this.progress_page = false;
-            this.activeJob_page = false;
-            this.createJob_page = false;
-            this.trip_history_page = false;
-            this.payments_page = false;
-            this.profile_page = false;
-        },
         change_url: function (url) {
             history.pushState('', '', url)
-        },
-        progress_menu: function () {
-            // disable all menus
-            this.allMenusDisable();
-            this.progress_page = true;
-            this.pageTitle = "আবেদন সমূহ";
-            this.change_url(ajaxrequ.site_url + '/author/' + ajaxrequ.user_login + '?page=progress');
-        },
-        activeJob_menu: function () {
-            // disable all menus
-            this.allMenusDisable();
-            this.activeJob_page = true;
-            this.pageTitle = "চলমান ট্রিপ্স";
-            this.change_url(ajaxrequ.site_url + '/author/' + ajaxrequ.user_login + '?page=active');
-        },
-        createJob_menu: function () {
-            // disable all menus
-            this.allMenusDisable();
-            this.createJob_page = true;
-            this.pageTitle = "নতুন ট্রিপ যুক্ত";
-            this.change_url(ajaxrequ.site_url + '/author/' + ajaxrequ.user_login + '?page=newjob');
-        },
-        triphistory_menu: function () {
-            // disable all menus
-            this.allMenusDisable();
-            this.trip_history_page = true;
-            this.pageTitle = "ট্রিপ হিস্টোরি";
-            this.change_url(ajaxrequ.site_url + '/author/' + ajaxrequ.user_login + '?page=triphistory');
-        },
-        payments_menu: function () {
-            // disable all menus
-            this.allMenusDisable();
-            this.payments_page = true;
-            this.pageTitle = "পেমেন্ট হিস্টোরি";
-            this.change_url(ajaxrequ.site_url + '/author/' + ajaxrequ.user_login + '?page=payments');
-        },
-        profile_menu: function () {
-            // disable all menus
-            this.allMenusDisable();
-            this.profile_page = true;
-            this.pageTitle = "প্রোফাইল";
-            this.change_url(ajaxrequ.site_url + '/author/' + ajaxrequ.user_login + '?page=profile');
         },
         profileTabs: function(tab){
             if(tab === ""){
@@ -349,47 +292,6 @@ const trents = new Vue({
         this.searchLocations();
     },
     created: function () {
-        // Page open
-        switch (ajaxrequ.page) {
-            case 'progress':
-                this.pageTitle = "আবেদন সমূহ";
-                this.allMenusDisable();
-                this.progress_page = true;
-                break;
-            case 'active':
-                this.pageTitle = "চলমান ট্রিপ্স";
-                this.allMenusDisable();
-                this.activeJob_page = true;
-                break;
-            case 'newjob':
-                this.pageTitle = "নতুন ট্রিপ যুক্ত";
-                this.allMenusDisable();
-                this.createJob_page = true;
-                break;
-            case 'triphistory':
-                this.pageTitle = "ট্রিপ হিস্টোরি";
-                this.allMenusDisable();
-                this.trip_history_page = true;
-                break;
-            case 'payments':
-                this.pageTitle = "পেমেন্ট হিস্টোরি";
-                this.allMenusDisable();
-                this.payments_page = true;
-                break;
-            case 'profile':
-                this.pageTitle = "প্রোফাইল";
-                this.allMenusDisable();
-                this.profile_page = true;
-                break;
-        
-            default:
-                this.change_url(ajaxrequ.site_url + '/author/' + ajaxrequ.user_login + '?page=progress');
-                this.pageTitle = "আবেদন সমূহ";
-                this.allMenusDisable();
-                this.progress_page = true;
-                break;
-        }
-
         this.searchLocations();
         // Open view
         document.getElementById('rents_wrap').style.display = 'block';
